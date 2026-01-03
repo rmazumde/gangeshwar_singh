@@ -1,0 +1,36 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  url?: string;
+  image?: string;
+  structuredData?: any[];
+}
+
+const {
+  title,
+  description = "Official site of Gangeshwar Singh – poet, writer, lyricist, and public servant from West Bengal.",
+  url = Astro.url?.href ?? "https://www.gangeshwarsingh.co.in",
+  image = "/images/placeholders/portrait.svg",
+  structuredData = []
+} = Astro.props as Props;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content="website" />
+<meta property="og:url" content={url} />
+<meta property="og:image" content={image} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
+<link rel="canonical" href={url} />
+
+{structuredData.map((data) => (
+  <script type="application/ld+json">
+    {JSON.stringify(data)}
+  </script>
+))}

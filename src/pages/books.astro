@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import BookCard from "../components/BookCard.astro";
+import { getCollection } from "astro:content";
+
+const books = await getCollection("books");
+const sorted = books.sort((a, b) => a.data.title.localeCompare(b.data.title));
+const bookSchema = sorted.map((book) => ({
+  "@type": "Book",
+  name: book.data.title,
+  inLanguage: book.data.language ?? "hi",
+  description: book.data.description,
+  bookFormat: "EBook"
+}));
+const structuredData = [{ "@context": "https://schema.org", "@type": "ItemList", itemListElement: bookSchema }];
+---
+
+<BaseLayout title="Published Books | Gangeshwar Singh" description="Poetry, essays, novels, and song dramas in Hindi and Bengali." structuredData={structuredData}>
+  <section class="section-shell pt-10 pb-16 space-y-6">
+    <SectionHeader eyebrow="Books" title="Published Books" description="Poetry, essays, novels, and song dramas in Hindi and Bengali." />
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {sorted.map((book) => (
+        <BookCard
+          title={book.data.title}
+          genre={book.data.genre}
+          description={book.data.description}
+          cover={book.data.cover}
+          language={book.data.language}
+          status={book.data.status}
+          buyLink={book.data.buyLink}
+        />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

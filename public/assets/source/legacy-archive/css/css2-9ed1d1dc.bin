@@ -1,0 +1,28 @@
+@font-face {
+  font-family: 'Vesper Libre';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/vesperlibre/v21/bx6CNxyWnf-uxPdXDHUD_Rd4Dw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Vesper Libre';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/vesperlibre/v21/bx6dNxyWnf-uxPdXDHUD_RdA-2ap0g.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Vesper Libre';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/vesperlibre/v21/bx6dNxyWnf-uxPdXDHUD_RdAs2Cp0g.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Vesper Libre';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/vesperlibre/v21/bx6dNxyWnf-uxPdXDHUD_RdAi2Kp0g.ttf) format('truetype');
+}

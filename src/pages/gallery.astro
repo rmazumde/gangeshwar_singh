@@ -1,0 +1,26 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import VideoCard from "../components/VideoCard.astro";
+import Lightbox from "../components/Lightbox.astro";
+import { getCollection } from "astro:content";
+import videosData from "../content/videos/videos.json";
+
+const photos = await getCollection("photos");
+---
+
+<BaseLayout title="Gallery | Gangeshwar Singh" description="Photo and video gallery powered by Markdown content.">
+  <section class="section-shell pt-10 pb-16 space-y-8">
+    <SectionHeader eyebrow="Gallery" title="Photo Gallery" description="Tap an image to view it larger." />
+    <Lightbox images={photos.map((p) => ({ src: p.data.image, title: p.data.title }))} />
+  </section>
+
+  <section class="section-shell pb-16 space-y-6">
+    <SectionHeader eyebrow="Videos" title="Video Library" description="YouTube embeds keep hosting costs near zero. Add or remove videos by editing content/videos/videos.json." />
+    <div class="grid gap-6 md:grid-cols-2">
+      {videosData.map((video) => (
+        <VideoCard title={video.title} url={video.youtubeUrl} description={video.description} category={video.category} />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

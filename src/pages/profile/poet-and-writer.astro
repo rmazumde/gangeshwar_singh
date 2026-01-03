@@ -1,0 +1,58 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SectionHeader from "../../components/SectionHeader.astro";
+import { getEntryBySlug, getCollection } from "astro:content";
+
+const page = await getEntryBySlug("pages", "poet-and-writer");
+const poems = await getCollection("poems");
+const poem = poems.find((p) => p.slug === "palamu-ki-dharti");
+const { Content } = page ? await page.render() : { Content: null };
+---
+
+<BaseLayout title="Poet & Writer | Gangeshwar Singh" description={page?.data.tagline}>
+  <section class="section-shell pt-10 pb-14 space-y-8">
+    <SectionHeader eyebrow="Profile" title="Poet & Writer" description={page?.data.tagline} />
+    <div class="grid gap-8 lg:grid-cols-[1.1fr,0.9fr] items-start">
+      <article class="card p-6 space-y-4 prose-content text-slate-700">
+        {Content && <Content />}
+      </article>
+      <div class="card p-6 space-y-4">
+        <p class="pill">Featured Poem</p>
+        <h3 class="text-xl font-semibold text-slate-900">{page?.data.featuredPoem?.title}</h3>
+        <div class="grid gap-4 md:grid-cols-2">
+          <div class="space-y-2">
+            <p class="text-sm uppercase tracking-wide text-slate-500">Original (Hindi)</p>
+            <div class="bg-indigo-50 rounded-xl p-4 space-y-1 text-slate-800">
+              {page?.data.featuredPoem?.original?.map((line) => <p>{line}</p>)}
+            </div>
+          </div>
+          <div class="space-y-2">
+            <p class="text-sm uppercase tracking-wide text-slate-500">English translation</p>
+            <div class="bg-white rounded-xl p-4 border border-slate-200 space-y-1 text-slate-800">
+              {page?.data.featuredPoem?.translation?.map((line) => <p>{line}</p>)}
+            </div>
+          </div>
+        </div>
+        {poem && (
+          <div class="pt-4">
+            <p class="text-sm uppercase tracking-wide text-slate-500">Notebook</p>
+            <div class="space-y-1 text-slate-700">
+              {poem.data.lines.map((line) => <p>{line}</p>)}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-shell pb-16">
+    <div class="card p-6 space-y-3">
+      <SectionHeader title="Writing philosophy" description="Clarity, empathy, and courage—learned from nature and honed in the field." />
+      <ul class="grid md:grid-cols-3 gap-4 text-slate-700">
+        <li class="p-4 rounded-xl bg-indigo-50 text-indigo-900 font-semibold">Nature as first teacher</li>
+        <li class="p-4 rounded-xl bg-white border border-slate-200">Everyday duty informs every stanza.</li>
+        <li class="p-4 rounded-xl bg-white border border-slate-200">Poetry as oxygen—not optional, but essential.</li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

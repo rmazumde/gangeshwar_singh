@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SectionHeader from "../../components/SectionHeader.astro";
+import { getEntryBySlug } from "astro:content";
+
+const page = await getEntryBySlug("pages", "lyricist");
+const { Content } = page ? await page.render() : { Content: null };
+---
+
+<BaseLayout title="Lyricist | Gangeshwar Singh" description={page?.data.tagline}>
+  <section class="section-shell pt-10 pb-14 space-y-8">
+    <SectionHeader eyebrow="Profile" title="Lyricist" description={page?.data.tagline} />
+    <div class="grid gap-8 lg:grid-cols-[1.1fr,0.9fr] items-start">
+      <article class="card p-6 prose-content text-slate-700 space-y-4">
+        {Content && <Content />}
+      </article>
+      <div class="card p-6 space-y-4">
+        <p class="pill">Songbook</p>
+        <div class="space-y-4">
+          {page?.data.categories?.map((category) => (
+            <div class="space-y-2">
+              <h3 class="text-lg font-semibold text-slate-900">{category.title}</h3>
+              <ul class="space-y-1 text-slate-700 list-disc list-inside">
+                {category.items.map((item) => <li>{item}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

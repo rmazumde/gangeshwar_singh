@@ -1,0 +1,50 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
+
+@layer base {
+  * {
+    scroll-behavior: smooth;
+  }
+
+body {
+  @apply text-base leading-relaxed;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.02em;
+  }
+
+  a {
+    color: var(--accent);
+  }
+
+  ::selection {
+    background: #c7d2fe;
+    color: #0f172a;
+  }
+}
+
+@layer components {
+  .prose-content p + p {
+    @apply mt-3;
+  }
+
+  .card {
+    @apply bg-white/80 backdrop-blur shadow-lg border rounded-2xl;
+    border-color: var(--border);
+    box-shadow: 0 10px 30px var(--shadow);
+  }
+
+  .section-shell {
+    @apply max-w-6xl mx-auto px-4 md:px-6;
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-2 rounded-full bg-indigo-50 text-indigo-700 px-3 py-1 text-sm font-medium;
+  }
+}

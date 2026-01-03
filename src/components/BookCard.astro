@@ -1,0 +1,34 @@
+---
+import bookCover from "../assets/placeholders/book-cover.svg";
+
+interface Props {
+  title: string;
+  genre?: string;
+  description?: string;
+  cover?: string;
+  buyLink?: string;
+  status?: string;
+  language?: string;
+}
+
+const { title, genre, description, cover, buyLink, status, language } = Astro.props as Props;
+const imageSrc = cover ?? bookCover.src;
+---
+
+<article class="card overflow-hidden flex flex-col h-full">
+  <div class="relative aspect-[3/4] bg-slate-50">
+    <img src={imageSrc} alt={`${title} cover`} loading="lazy" class="w-full h-full object-cover" />
+    {status && <span class="absolute top-3 left-3 pill bg-white/90 text-indigo-700">{status}</span>}
+  </div>
+  <div class="p-4 space-y-2 flex-1 flex flex-col">
+    <h3 class="text-lg font-semibold text-slate-900">{title}</h3>
+    <p class="text-sm text-slate-600">{genre || "Book"}</p>
+    {language && <p class="text-sm text-slate-500">Language: {language}</p>}
+    {description && <p class="text-slate-700 text-sm flex-1">{description}</p>}
+    {buyLink && (
+      <a href={buyLink} class="text-sm font-semibold text-indigo-700 hover:underline mt-auto" target="_blank" rel="noreferrer">
+        Buy or read
+      </a>
+    )}
+  </div>
+</article>

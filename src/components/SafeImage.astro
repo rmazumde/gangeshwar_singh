@@ -1,0 +1,34 @@
+---
+interface Props {
+  src?: string;
+  alt: string;
+  class?: string;
+  width?: number;
+  height?: number;
+  loading?: "lazy" | "eager";
+}
+
+const { src, alt, class: className = "", width, height, loading = "lazy" } = Astro.props as Props;
+const aspect = width && height ? `${width}/${height}` : "3/4";
+const hasSrc = Boolean(src);
+---
+
+<div class={`relative overflow-hidden ${className}`} style={`aspect-ratio:${aspect}`}>
+  {hasSrc ? (
+    <img
+      src={src}
+      alt={alt}
+      class="w-full h-full object-cover"
+      width={width}
+      height={height}
+      loading={loading}
+      onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+    />
+  ) : null}
+  <div class={`absolute inset-0 grid place-items-center bg-[var(--bg)] text-[var(--ink)] ${hasSrc ? "hidden" : ""}`}>
+    <div class="text-center px-4">
+      <div class="mx-auto h-16 w-16 rounded-full border border-[var(--ink)]/15 text-[var(--ink)] grid place-items-center text-xl font-bold">GS</div>
+      <p class="mt-2 text-sm font-semibold text-[var(--muted)]">Portrait unavailable</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,83 @@
+---
+import SafeImage from "./SafeImage.astro";
+
+interface Props {
+  kicker?: string;
+  title: string;
+  subtitle?: string;
+  cta?: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
+  imageSrc?: string;
+  ribbon?: string;
+}
+
+const { kicker, title, subtitle, cta, secondaryCta, imageSrc, ribbon } = Astro.props as Props;
+---
+
+<section class="section-shell pt-8 pb-16 md:pb-18 relative overflow-hidden">
+  <div class="relative grid gap-10 lg:grid-cols-1">
+    <div class="relative max-w-4xl w-full mx-auto">
+      <div class="relative overflow-hidden rounded-[24px] border border-[var(--border)] bg-white shadow-lg">
+        <div class="absolute top-3 left-3 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-[var(--accent)] shadow-sm">Author & Officer</div>
+        <div class="absolute bottom-3 left-3 rounded-full bg-[var(--accent)] text-white text-xs font-semibold px-4 py-1 shadow">
+          About the writer
+        </div>
+        <SafeImage
+          src={imageSrc}
+          alt="Portrait of Gangeshwar Singh"
+          class="w-full h-full object-cover min-h-[280px] max-h-[480px]"
+          loading="eager"
+        />
+      </div>
+    </div>
+
+    <div class="grid gap-10 lg:grid-cols-[1.1fr,0.9fr] items-start">
+      <div class="space-y-6">
+        {kicker && <p class="pill w-fit">{kicker}</p>}
+        <h1 class="text-4xl md:text-5xl font-bold text-[var(--ink)] leading-tight">{title}</h1>
+        {subtitle && <p class="text-lg text-[var(--muted)] max-w-2xl">{subtitle}</p>}
+        {ribbon && (
+          <div class="inline-flex items-center gap-2 rounded-full bg-[var(--accent-soft)]/20 text-[var(--ink)] px-4 py-2 font-semibold">
+            <span aria-hidden="true">✒️</span> {ribbon}
+          </div>
+        )}
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div class="p-0">
+            <p class="text-sm uppercase tracking-wide text-[var(--accent)] font-semibold">Voice</p>
+            <p class="text-[var(--ink)]">Poetry, lyrics, and essays rooted in Palamu’s rivers and Kolkata’s streets.</p>
+          </div>
+          <div class="p-0">
+            <p class="text-sm uppercase tracking-wide text-[var(--accent)] font-semibold">Service</p>
+            <p class="text-[var(--ink)]">IPS officer (1987 batch), bringing empathy from the field into every stanza.</p>
+          </div>
+        </div>
+        <div class="flex gap-3 flex-wrap">
+          {cta && (
+            <a
+              href={cta.href}
+              class="px-6 py-3 rounded-full bg-[var(--accent)] text-white font-semibold shadow-lg hover:-translate-y-0.5 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/40 transition-transform"
+            >
+              {cta.label}
+            </a>
+          )}
+          {secondaryCta && (
+            <a
+              href={secondaryCta.href}
+              class="px-6 py-3 rounded-full border border-[var(--accent)]/25 text-[var(--accent)] font-semibold bg-white hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 transition-transform"
+            >
+              {secondaryCta.label}
+            </a>
+          )}
+        </div>
+      </div>
+      <div class="pt-2 max-w-xl space-y-2">
+        <p class="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Notebook — Hindi</p>
+        <div class="leading-relaxed text-[var(--ink)] space-y-1">
+          <p>पलामू की धरती अपनी, गगन अपना,</p>
+          <p>पूर्वजों के रक्त से सिंचित यह चमन अपना।</p>
+          <p class="text-[var(--muted)] text-sm mt-2">— placeholder poem, replace anytime</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

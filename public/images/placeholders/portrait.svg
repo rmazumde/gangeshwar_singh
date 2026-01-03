@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 420" role="img" aria-labelledby="title desc">
+<title>Portrait placeholder</title>
+<desc>Minimal portrait silhouette for layout preview.</desc>
+<defs>
+<linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#e8f0ff"/>
+<stop offset="100%" stop-color="#d8e4ff"/>
+</linearGradient>
+</defs>
+<rect width="320" height="420" fill="url(#bg)" rx="18"/>
+<circle cx="160" cy="150" r="70" fill="#b8c6e5"/>
+<rect x="80" y="230" width="160" height="140" rx="30" fill="#a5b4d3"/>
+<rect x="110" y="260" width="100" height="120" rx="22" fill="#f7f9fe" opacity="0.85"/>
+</svg>

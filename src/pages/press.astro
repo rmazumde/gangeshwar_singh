@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import { getCollection } from "astro:content";
+
+const press = await getCollection("press");
+const clips = press.filter((item) => item.data.type === "clip");
+const articles = press.filter((item) => item.data.type === "article");
+---
+
+<BaseLayout title="Press Clippings | Gangeshwar Singh" description="Press coverage, reviews, and articles.">
+  <section class="section-shell pt-10 pb-16 space-y-8">
+    <SectionHeader eyebrow="Press" title="Press Clippings" description="Gallery items link to original scans, PDFs, or external articles." />
+    <div class="grid gap-6 md:grid-cols-3">
+      {clips.map((item) => (
+        <article class="card overflow-hidden flex flex-col">
+          {item.data.image && (
+            <div class="aspect-[4/3] bg-slate-50">
+              <img src={item.data.image} alt={item.data.title} loading="lazy" class="w-full h-full object-cover" />
+            </div>
+          )}
+          <div class="p-4 space-y-2 flex-1 flex flex-col">
+            <h3 class="text-lg font-semibold text-slate-900">{item.data.title}</h3>
+            {item.data.description && <p class="text-sm text-slate-700 flex-1">{item.data.description}</p>}
+            <a href={item.data.link} class="text-indigo-700 font-semibold hover:underline mt-auto" target="_blank" rel="noreferrer">
+              View clipping →
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="space-y-4">
+      <SectionHeader eyebrow="Articles" title="Articles & Features" description="Long-form pieces in PDF or web format." />
+      <div class="grid gap-4 md:grid-cols-2">
+        {articles.map((item) => (
+          <article class="card p-5 space-y-2 flex flex-col">
+            <h3 class="text-lg font-semibold text-slate-900">{item.data.title}</h3>
+            {item.data.description && <p class="text-slate-700 flex-1">{item.data.description}</p>}
+            <a href={item.data.link} class="text-indigo-700 font-semibold hover:underline" target="_blank" rel="noreferrer">
+              Read article →
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

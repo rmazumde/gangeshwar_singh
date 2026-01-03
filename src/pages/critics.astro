@@ -1,0 +1,20 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import { getEntryBySlug } from "astro:content";
+
+const page = await getEntryBySlug("pages", "critics");
+const { Content } = page ? await page.render() : { Content: null };
+---
+
+<BaseLayout title="Critics & Endorsement | Gangeshwar Singh" description={page?.data.tagline}>
+  <section class="section-shell pt-10 pb-16 space-y-6">
+    <SectionHeader eyebrow="Community Voices" title="Critics & Endorsement" description={page?.data.tagline} />
+    <div class="card p-6 prose-content text-slate-700">
+      {Content && <Content />}
+    </div>
+    <div class="card p-6 space-y-3">
+      <p class="text-slate-700">Add testimonials by creating Markdown files under <code>src/content/press</code> or by appending Markdown blocks here. Each block can include a name, publication, date, and a short quote.</p>
+    </div>
+  </section>
+</BaseLayout>

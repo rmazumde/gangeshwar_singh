@@ -1,0 +1,83 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import { getEntryBySlug } from "astro:content";
+
+const page = await getEntryBySlug("pages", "contact");
+const { Content } = page ? await page.render() : { Content: null };
+
+const contactInfo = {
+  address: "JC-4/1B, JC Block, Sector II, Salt Lake, Spring Meadows Co-operative Housing Society Ltd. Kolkata - 700106, West Bengal, India",
+  phone: "+91 82504 08589",
+  whatsapp: "+91 82504 08589",
+  email: "singhgangeswar2017@gmail.com",
+  website: "https://www.gangeshwarsingh.co.in"
+};
+
+const formspreeId = import.meta.env.PUBLIC_FORMSPREE_ID || "";
+const useMailto = !formspreeId;
+const formAction = useMailto ? "#" : `https://formspree.io/f/${formspreeId}`;
+const formMethod = useMailto ? "post" : "POST";
+---
+
+<BaseLayout title="Contact | Gangeshwar Singh" description={page?.data.tagline}>
+  <section class="section-shell pt-10 pb-16 space-y-8">
+    <SectionHeader eyebrow="Contact" title="Get in touch" description={page?.data.tagline} />
+    <div class="grid gap-8 lg:grid-cols-2">
+      <article class="card p-6 space-y-4 prose-content text-slate-700">
+        {Content && <Content />}
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div class="p-4 rounded-xl bg-indigo-50 text-indigo-900 space-y-2">
+            <p class="font-semibold">Address</p>
+            <p class="text-sm text-indigo-900/90">{contactInfo.address}</p>
+          </div>
+          <div class="p-4 rounded-xl bg-white border border-slate-200 space-y-2">
+            <p class="font-semibold">Phone & WhatsApp</p>
+            <a href={`tel:${contactInfo.phone.replace(/\s+/g, "")}`} class="text-indigo-700 font-semibold">{contactInfo.phone}</a>
+            <p class="text-sm text-slate-600">WhatsApp: <a class="text-indigo-700 font-semibold" href={`https://wa.me/${contactInfo.whatsapp.replace(/\s+|\+/g, "")}`} target="_blank" rel="noreferrer">{contactInfo.whatsapp}</a></p>
+          </div>
+          <div class="p-4 rounded-xl bg-white border border-slate-200 space-y-2">
+            <p class="font-semibold">Email</p>
+            <a href={`mailto:${contactInfo.email}`} class="text-indigo-700 font-semibold break-words">{contactInfo.email}</a>
+          </div>
+          <div class="p-4 rounded-xl bg-white border border-slate-200 space-y-2">
+            <p class="font-semibold">Website</p>
+            <a href={contactInfo.website} class="text-indigo-700 font-semibold break-words" target="_blank" rel="noreferrer">{contactInfo.website}</a>
+          </div>
+        </div>
+      </article>
+
+      <div class="card p-6 space-y-4">
+        <SectionHeader title="Send a note" description="Uses Formspree (free tier). Set PUBLIC_FORMSPREE_ID in env to activate." />
+        <form action={formAction} method={formMethod} class="space-y-4">
+          <label class="block space-y-1">
+            <span class="text-sm font-semibold text-slate-800">Name</span>
+            <input name="name" required class="w-full rounded-lg border border-slate-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200" />
+          </label>
+          <label class="block space-y-1">
+            <span class="text-sm font-semibold text-slate-800">Email</span>
+            <input type="email" name="email" required class="w-full rounded-lg border border-slate-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200" />
+          </label>
+          <label class="block space-y-1">
+            <span class="text-sm font-semibold text-slate-800">Message</span>
+            <textarea name="message" rows="4" required class="w-full rounded-lg border border-slate-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200"></textarea>
+          </label>
+          {!useMailto && (
+            <>
+              <input type="hidden" name="_subject" value="New inquiry from gangeshwarwrites.com" />
+              <input type="hidden" name="_replyto" value={contactInfo.email} />
+              <input type="text" name="_gotcha" class="hidden" />
+            </>
+          )}
+          <button type="submit" class="px-5 py-3 rounded-full bg-indigo-600 text-white font-semibold shadow-md shadow-indigo-200 hover:-translate-y-0.5 transition">
+            Send message
+          </button>
+          <p class="text-xs text-slate-500">
+            Tip: Set <code>PUBLIC_FORMSPREE_ID</code> to your Formspree form ID (e.g. <code>xabcd123</code>) to send without opening an email client.
+            If not set, the button opens your mail app to email <a class="text-indigo-700 font-semibold ml-1" href={`mailto:${contactInfo.email}`}>{contactInfo.email}</a>.
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

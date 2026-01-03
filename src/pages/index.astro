@@ -1,0 +1,162 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import BookCard from "../components/BookCard.astro";
+import { getCollection, getEntryBySlug } from "astro:content";
+
+const page = await getEntryBySlug("pages", "home");
+const homeData = page?.data;
+const homeBody = page ? (await page.render()).Content : null;
+const books = await getCollection("books");
+const highlighted = homeData?.highlightBooks
+  ? books.filter((book) => homeData.highlightBooks?.includes(book.slug))
+  : books.slice(0, 4);
+
+const structuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Gangeshwar Singh",
+    jobTitle: "Writer, Poet, Lyricist, IPS Officer",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "JC-4/1B, JC Block, Sector II, Salt Lake",
+      addressLocality: "Kolkata",
+      addressRegion: "West Bengal",
+      postalCode: "700106",
+      addressCountry: "IN"
+    },
+    url: Astro.url?.href ?? "https://www.gangeshwarsingh.co.in",
+    sameAs: [
+      "https://www.facebook.com/gangeshwar.singh.1217",
+      "https://www.youtube.com/@gangeshwarsingh-IPS",
+      "https://gangeshwarsingh.blogspot.com"
+    ]
+  }
+];
+---
+
+<BaseLayout title="Gangeshwar Singh | Poet, Writer, Lyricist" description={homeData?.tagline} structuredData={structuredData}>
+  <Hero
+    kicker="Eminent writer & IPS officer"
+    title="Gangeshwar Singh"
+    subtitle={homeData?.tagline}
+    cta={homeData?.heroCta}
+    secondaryCta={homeData?.secondaryCta}
+    imageSrc={homeData?.heroImage}
+    ribbon="Poetry, service, and melody in two languages."
+  />
+
+  <section class="section-shell pb-12 space-y-6">
+    <div class="grid gap-6 lg:grid-cols-[1.25fr,0.75fr] items-start">
+      <div class="card p-6 space-y-4 bg-white/90 border border-amber-100">
+        <SectionHeader title="About the writer" description="Meral village roots, Palamu rivers, and a lifelong dialogue between poetry and duty." />
+        {homeBody && (
+          <div class="prose-content text-slate-700 space-y-3">
+            <homeBody />
+          </div>
+        )}
+      </div>
+      <div class="card p-6 space-y-3 bg-gradient-to-b from-indigo-50 to-white border-indigo-100">
+        <p class="text-sm uppercase tracking-[0.2em] text-slate-500">Line to keep</p>
+        <p class="text-2xl font-semibold text-slate-900 leading-snug">
+          “Writing is oxygen—a way to honor the land that raised me and the people I serve.”
+        </p>
+        <div class="pt-3 grid grid-cols-2 gap-3 text-sm text-slate-700">
+          <div class="p-3 rounded-xl bg-white/80 border border-indigo-100">
+            <p class="font-semibold text-indigo-800">Languages</p>
+            <p>Hindi & Bengali</p>
+          </div>
+          <div class="p-3 rounded-xl bg-white/80 border border-indigo-100">
+            <p class="font-semibold text-indigo-800">Genres</p>
+            <p>Poetry, essays, lyrics, documentary scripts</p>
+          </div>
+          <div class="p-3 rounded-xl bg-white/80 border border-indigo-100">
+            <p class="font-semibold text-indigo-800">Current role</p>
+            <p>Director General, Enforcement Branch, West Bengal</p>
+          </div>
+          <div class="p-3 rounded-xl bg-white/80 border border-indigo-100">
+            <p class="font-semibold text-indigo-800">Themes</p>
+            <p>Nature, justice, devotion, resilience</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-shell pb-16 space-y-6">
+    <SectionHeader title="Highlighted books" description="Poetry, essays, and song dramas in Hindi and Bengali." />
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      {highlighted.map((book) => (
+        <BookCard
+          title={book.data.title}
+          genre={book.data.genre}
+          description={book.data.description}
+          cover={book.data.cover}
+          language={book.data.language}
+          status={book.data.status}
+          buyLink={book.data.buyLink}
+        />
+      ))}
+    </div>
+    <div class="flex justify-end">
+      <a href="/books" class="text-indigo-700 font-semibold hover:underline">View all published books →</a>
+    </div>
+  </section>
+
+  <section class="section-shell pb-16 grid gap-6 lg:grid-cols-3">
+    <div class="card p-6 space-y-3 bg-gradient-to-br from-white via-indigo-50 to-amber-50">
+      <p class="pill">Profile</p>
+      <h3 class="text-xl font-semibold text-slate-900">Poet & Writer</h3>
+      <p class="text-slate-700">Palamu’s rivers and Bengal’s streets echo in his poems.</p>
+      <a href="/profile/poet-and-writer" class="text-indigo-700 font-semibold hover:underline">Read the story →</a>
+    </div>
+    <div class="card p-6 space-y-3 bg-white">
+      <p class="pill">Profile</p>
+      <h3 class="text-xl font-semibold text-slate-900">Lyricist</h3>
+      <p class="text-slate-700">Bhajans, Ganesh Vandana, Tarak Chalisa, Bengali adhunik songs.</p>
+      <a href="/profile/lyricist" class="text-indigo-700 font-semibold hover:underline">See song list →</a>
+    </div>
+    <div class="card p-6 space-y-3 bg-white">
+      <p class="pill">Profile</p>
+      <h3 class="text-xl font-semibold text-slate-900">Professional career</h3>
+      <p class="text-slate-700">IPS officer (1987 batch); experience from Darjeeling hills to Jungle Mahal.</p>
+      <a href="/profile/professional-career" class="text-indigo-700 font-semibold hover:underline">View timeline →</a>
+    </div>
+  </section>
+
+  <section class="section-shell pb-16 space-y-6">
+    <div class="grid gap-6 lg:grid-cols-[1.2fr,0.8fr] items-start">
+      <div class="card p-6 space-y-4">
+        <SectionHeader title="Verse from Palamu" description="A few lines to set the tone." />
+        <div class="grid gap-3 md:grid-cols-2">
+          <div class="p-4 rounded-xl bg-amber-50 text-amber-900 space-y-1">
+            <p class="text-sm uppercase tracking-wide font-semibold">Original</p>
+            <p>Palamu Ki Dharti Apani, Gagan Apna</p>
+            <p>Purkho Ke Rakt Sinchit Chaman Apna.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-white border border-slate-200 space-y-1 text-slate-800">
+            <p class="text-sm uppercase tracking-wide text-slate-500 font-semibold">Translation</p>
+            <p>The earth of Palamu is ours, the sky is ours too.</p>
+            <p>Beautiful land nourished by the blood of our ancestors.</p>
+          </div>
+        </div>
+      </div>
+      <div class="card p-6 space-y-4">
+        <SectionHeader title="Gallery & Press" description="Photos, clippings, and video performances." />
+        <div class="flex flex-wrap gap-2">
+          <span class="pill">Photo gallery</span>
+          <span class="pill">Videos</span>
+          <span class="pill">Press</span>
+          <span class="pill">Awards</span>
+        </div>
+        <div class="flex gap-4">
+          <a href="/gallery" class="text-indigo-700 font-semibold hover:underline">Open gallery →</a>
+          <a href="/press" class="text-indigo-700 font-semibold hover:underline">Press clippings →</a>
+          <a href="/achievements" class="text-indigo-700 font-semibold hover:underline">Achievements →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

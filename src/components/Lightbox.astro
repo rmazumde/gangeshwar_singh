@@ -1,0 +1,53 @@
+---
+interface LightboxImage {
+  src: string;
+  alt?: string;
+  title?: string;
+}
+
+interface Props {
+  images: LightboxImage[];
+}
+
+const { images } = Astro.props as Props;
+---
+
+<script>
+  const open = (src: string, alt: string, title: string) => {
+    const overlay = document.createElement("div");
+    overlay.className = "fixed inset-0 z-[999] bg-black/70 backdrop-blur-sm flex items-center justify-center px-4";
+    overlay.innerHTML = `
+      <div class="relative max-w-5xl w-full">
+        <button class="absolute -top-12 right-0 text-white bg-black/50 px-3 py-2 rounded-full text-sm font-semibold hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-white/50">Close</button>
+        <div class="relative overflow-hidden rounded-2xl bg-white">
+          <img src="${src}" alt="${alt}" class="w-full h-full object-contain max-h-[80vh] bg-black" />
+          ${title ? `<div class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-sm px-4 py-2">${title}</div>` : ""}
+        </div>
+      </div>
+    `;
+    const close = () => overlay.remove();
+    overlay.addEventListener("click", close);
+    overlay.querySelector("button")?.addEventListener("click", close);
+    document.body.appendChild(overlay);
+  };
+</script>
+
+<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  {images.map((img) => (
+    <button
+      type="button"
+      class="relative block aspect-[4/3] overflow-hidden rounded-2xl bg-slate-50 ring-1 ring-[var(--border)]/60 group focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/40"
+      onClick={() => open(img.src, img.alt ?? img.title ?? "Gallery image", img.title ?? "")}
+      aria-label={`Open ${img.title ?? img.alt ?? "gallery image"}`}
+    >
+      <img
+        src={img.src}
+        alt={img.alt ?? img.title ?? "Gallery image"}
+        loading="lazy"
+        class="w-full h-full object-cover transition-transform duration-200 group-hover:scale-[1.03]"
+      />
+      <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+      {img.title && <div class="absolute bottom-3 left-3 text-white text-sm font-semibold drop-shadow">{img.title}</div>}
+    </button>
+  ))}
+</div>
